@@ -3,20 +3,72 @@ const time = document.querySelector(".time");
 const dateToday = document.querySelector(".date");
 const greeting = document.querySelector(".greeting");
 const name = document.querySelector(".name");
+const body = document.querySelector(".body");
+const slideNext = document.querySelector(".slide-next");
+const slidePrev = document.querySelector(".slide-prev");
+
+const date = new Date();
+
 //get time of day
 const getTimeOfDay = () => {
-  const date = new Date();
   const hours = date.getHours();
   if (hours >= 6 && hours <= 12) {
-    return "morning,";
+    return "morning";
   } else if (hours > 12 && hours <= 18) {
-    return "afternoon,";
+    return "afternoon";
   } else if (hours > 18 && hours <= 22) {
-    return "evening,";
+    return "evening";
   } else {
-    return "night,";
+    return "night";
   }
 };
+
+/*---------- PICTURE BLOCK ----------*/
+//get random number
+const getRandomNum = () => {
+  return Math.ceil(Math.random() * 20);
+};
+
+//set background pic
+let randomNum = getRandomNum();
+
+const setBg = () => {
+  const timeOfDay = getTimeOfDay();
+  const bgNum = String(randomNum).padStart(2, "0");
+  console.log(bgNum);
+  const img = new Image();
+  img.src = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${timeOfDay}/${bgNum}.jpg`;
+  img.onload = () => {
+    body.style.backgroundImage = `url(${img.src})`;
+  };
+};
+
+setBg();
+
+const getSlideNext = () => {
+  if (randomNum < 20) {
+    randomNum = randomNum + 1;
+    setBg();
+    console.log(`по порядку:${randomNum}`);
+  } else if (randomNum === 20) {
+    randomNum = 1;
+    setBg();
+  }
+};
+
+slideNext.addEventListener("click", getSlideNext);
+
+const getSlidePrev = () => {
+  if (randomNum > 1) {
+    randomNum = randomNum - 1;
+    setBg();
+  } else if (randomNum === 1) {
+    randomNum = 20;
+    setBg();
+  }
+};
+
+slidePrev.addEventListener("click", getSlidePrev);
 
 //greeting
 const showGreeting = () => {
@@ -26,8 +78,7 @@ const showGreeting = () => {
 };
 
 //data
-function showDate() {
-  const date = new Date();
+const showDate = () => {
   const options = {
     month: "short",
     day: "numeric",
@@ -37,21 +88,20 @@ function showDate() {
   };
   const currentDate = date.toLocaleDateString("en-EN", options);
   dateToday.textContent = `${currentDate}`;
-}
+};
 
 //time
-function showTime() {
-  const date = new Date();
+const showTime = () => {
   const currentTime = date.toLocaleTimeString();
   time.textContent = `${currentTime}`;
   showDate();
   showGreeting();
   setTimeout(showTime, 1000); //рекурсивный сетТаймаут
-}
+};
 
 showTime();
 
-//local storage - хранилище браузера.
+/* ---------- local storage - хранилище браузера. ---------- */
 
 //перед перезагрузкой или закрытием страницы (событие beforeunload) данные нужно сохранить
 function setLocalStorage() {
