@@ -6,6 +6,10 @@ const name = document.querySelector(".name");
 const body = document.querySelector(".body");
 const slideNext = document.querySelector(".slide-next");
 const slidePrev = document.querySelector(".slide-prev");
+const weatherIcon = document.querySelector(".weather-icon");
+const temperature = document.querySelector(".temperature");
+const weatherDescription = document.querySelector(".weather-description");
+const city = document.querySelector(".city");
 
 const date = new Date();
 
@@ -56,8 +60,6 @@ const getSlideNext = () => {
   }
 };
 
-slideNext.addEventListener("click", getSlideNext);
-
 const getSlidePrev = () => {
   if (randomNum > 1) {
     randomNum = randomNum - 1;
@@ -68,8 +70,9 @@ const getSlidePrev = () => {
   }
 };
 
+slideNext.addEventListener("click", getSlideNext);
 slidePrev.addEventListener("click", getSlidePrev);
-
+/*---------- DATA, TIME, GREETING ----------*/
 //greeting
 const showGreeting = () => {
   const timeOfDay = getTimeOfDay();
@@ -79,33 +82,30 @@ const showGreeting = () => {
 
 //data
 const showDate = () => {
-  const options = {
-    month: "short",
-    day: "numeric",
-    hour: "numeric",
-    minute: "numeric",
-    timeZone: "UTC",
-  };
-  const currentDate = date.toLocaleDateString("en-EN", options);
+  const options = { month: "long", day: "numeric", year: "numeric" };
+  const currentDate = date.toLocaleDateString("en-Br", options);
   dateToday.textContent = `${currentDate}`;
+  console.log(currentDate);
 };
 
 //time
 const showTime = () => {
+  const date = new Date();
   const currentTime = date.toLocaleTimeString();
   time.textContent = `${currentTime}`;
-  showDate();
   showGreeting();
+  showDate();
   setTimeout(showTime, 1000); //рекурсивный сетТаймаут
 };
 
 showTime();
 
-/* ---------- local storage - хранилище браузера. ---------- */
+/* ---------- LOCAL STORAGE - хранилище браузера. ---------- */
 
 //перед перезагрузкой или закрытием страницы (событие beforeunload) данные нужно сохранить
 function setLocalStorage() {
   localStorage.setItem("name", name.value);
+  localStorage.setItem("city", city.value);
 }
 window.addEventListener("beforeunload", setLocalStorage);
 
@@ -114,5 +114,43 @@ function getLocalStorage() {
   if (localStorage.getItem("name")) {
     name.value = localStorage.getItem("name");
   }
+
+  if (localStorage.getItem("city")) {
+    city.value = localStorage.getItem("city");
+  } else {
+    city.value = "Saint-Petersburg";
+  }
+
+  console.log(`город: ${city.value}`);
 }
 window.addEventListener("load", getLocalStorage);
+
+/*---------- WEATHER ----------*/
+//async перед функцией гарантирует, что эта функция в любом случае вернёт промис
+async function getWeather() {
+  console.log("weather");
+  if (localStorage.getItem("city")) {
+    city.value = localStorage.getItem("city");
+  } else {
+    city.value = "Saint-Petersburg";
+  }
+  const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=en&appid=aae587ac736256664c86de685126b6dc&units=metric`;
+  const res = await fetch(url);
+  const data = await res.json();
+
+  weatherIcon.className = "weather-icon owf";
+  weatherIcon.classList.add(`owf-${data.weather[0].id}`);
+  temperature.textContent = `${data.main.temp}°C`;
+  weatherDescription.textContent = data.weather[0].description;
+}
+
+function setCity(event) {
+  if (event.code === "Enter") {
+    getWeather();
+    city.blur();
+  }
+}
+
+city.addEventListener("keypress", setCity);
+
+/*---------- QUOTES ----------*/
