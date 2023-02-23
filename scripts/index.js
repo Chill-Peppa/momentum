@@ -46,6 +46,9 @@ const getRandomNum = () => {
 //set background pic
 let randomNum = getRandomNum();
 
+//hide start bg pic
+body.style.backgroundImage = "none";
+
 const setBg = () => {
   const timeOfDay = getTimeOfDay();
   const bgNum = String(randomNum).padStart(2, "0");
@@ -215,18 +218,19 @@ const togglePlayButton = () => {
 
 const playNext = () => {
   playNum++;
-  playAudio();
-  if (playNum === playList.length - 1) {
+  if (playNum === playList.length) {
     playNum = 0;
   }
+  playAudio();
+  console.log(playNum);
 };
 
 const playPrev = () => {
   playNum--;
-  playAudio();
   if (playNum === 0) {
-    playNum = playList.length - 1;
+    playNum = playList.length;
   }
+  playAudio();
 };
 
 playAudioButton.addEventListener("click", togglePlayButton);
@@ -234,9 +238,13 @@ playButtonNext.addEventListener("click", playNext);
 playButtonPrev.addEventListener("click", playPrev);
 
 //create list in javaScript
-playList.forEach((song) => {
+playList.forEach((song, index) => {
   const li = document.createElement("li");
   li.classList.add("play-item");
   li.textContent = `${song.title}`;
   playlistContainer.append(li);
+  li.addEventListener("click", () => {
+    console.log(`index: ${index}`);
+    playAudio(index);
+  });
 });
