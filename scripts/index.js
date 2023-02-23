@@ -1,16 +1,22 @@
-//search elements
-const time = document.querySelector(".time");
-const dateToday = document.querySelector(".date");
-const greeting = document.querySelector(".greeting");
-const name = document.querySelector(".name");
-const body = document.querySelector(".body");
-const slideNext = document.querySelector(".slide-next");
-const slidePrev = document.querySelector(".slide-prev");
-const weatherIcon = document.querySelector(".weather-icon");
-const temperature = document.querySelector(".temperature");
-const weatherDescription = document.querySelector(".weather-description");
-const city = document.querySelector(".city");
-const quoteButton = document.querySelector(".change-quote");
+import playList from "./playList.js";
+import {
+  time,
+  dateToday,
+  greeting,
+  name,
+  body,
+  slideNext,
+  slidePrev,
+  weatherIcon,
+  temperature,
+  weatherDescription,
+  city,
+  quoteButton,
+  playAudioButton,
+  playButtonNext,
+  playButtonPrev,
+  playlistContainer,
+} from "./constants.js";
 
 city.value = "Moscow";
 getWeather();
@@ -182,15 +188,11 @@ quoteButton.addEventListener("click", getQuotes);
 /*---------- PLAYER ----------*/
 let isPlay = false; //переменная-флаг
 let playNum = 0;
-const playAudioButton = document.querySelector(".play");
-const playButtonNext = document.querySelector(".play-next");
-const playButtonPrev = document.querySelector(".play-prev");
-//const stopAudioButton = document.querySelector(".pause");
 
 const audio = new Audio();
 
 function playAudio() {
-  audio.src = "./assets/sounds/Summer Wind.mp3"; // ссылка на аудио-файл;
+  audio.src = playList[playNum].src; // ссылка на аудио-файл;
   audio.currentTime = 0; //при каждом запуске функции трек будет воспроизводиться сначала
   audio.play();
 }
@@ -214,13 +216,27 @@ const togglePlayButton = () => {
 const playNext = () => {
   playNum++;
   playAudio();
+  if (playNum === playList.length - 1) {
+    playNum = 0;
+  }
 };
 
 const playPrev = () => {
   playNum--;
   playAudio();
+  if (playNum === 0) {
+    playNum = playList.length - 1;
+  }
 };
 
 playAudioButton.addEventListener("click", togglePlayButton);
 playButtonNext.addEventListener("click", playNext);
 playButtonPrev.addEventListener("click", playPrev);
+
+//create list in javaScript
+playList.forEach((song) => {
+  const li = document.createElement("li");
+  li.classList.add("play-item");
+  li.textContent = `${song.title}`;
+  playlistContainer.append(li);
+});
