@@ -10,6 +10,7 @@ const weatherIcon = document.querySelector(".weather-icon");
 const temperature = document.querySelector(".temperature");
 const weatherDescription = document.querySelector(".weather-description");
 const city = document.querySelector(".city");
+city.value = "Moscow";
 
 const date = new Date();
 
