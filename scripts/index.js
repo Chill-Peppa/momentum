@@ -10,7 +10,10 @@ const weatherIcon = document.querySelector(".weather-icon");
 const temperature = document.querySelector(".temperature");
 const weatherDescription = document.querySelector(".weather-description");
 const city = document.querySelector(".city");
+const quoteButton = document.querySelector(".change-quote");
+
 city.value = "Moscow";
+getWeather();
 
 const date = new Date();
 
@@ -86,7 +89,6 @@ const showDate = () => {
   const options = { month: "long", day: "numeric", year: "numeric" };
   const currentDate = date.toLocaleDateString("en-Br", options);
   dateToday.textContent = `${currentDate}`;
-  console.log(currentDate);
 };
 
 //time
@@ -120,16 +122,12 @@ function getLocalStorage() {
     city.value = localStorage.getItem("city");
     getWeather();
   }
-
-  console.log(`город: ${city.value}`);
 }
 window.addEventListener("load", getLocalStorage);
 
 /*---------- WEATHER ----------*/
 //async перед функцией гарантирует, что эта функция в любом случае вернёт промис
 async function getWeather() {
-  console.log("weather");
-
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=en&appid=aae587ac736256664c86de685126b6dc&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
@@ -150,3 +148,28 @@ function setCity(event) {
 city.addEventListener("keypress", setCity);
 
 /*---------- QUOTES ----------*/
+let array = [];
+async function getQuotes() {
+  const listSrc = "../data.json";
+  const res = await fetch(listSrc);
+  const data = await res.json();
+  array = data;
+
+  showQuotes();
+}
+
+getQuotes();
+
+function showQuotes() {
+  const quoteText = document.querySelector(".quote");
+  const quoteAuthor = document.querySelector(".author");
+
+  const randomNum = Math.ceil(Math.random() * array.length);
+  console.log(randomNum);
+  let quote = array[randomNum];
+
+  quoteText.textContent = quote.text;
+  quoteAuthor.textContent = quote.author;
+}
+
+quoteButton.addEventListener("click", getQuotes);
