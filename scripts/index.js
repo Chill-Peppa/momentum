@@ -86,7 +86,12 @@ const showGreeting = () => {
 
 //data
 const showDate = () => {
-  const options = { month: "long", day: "numeric", year: "numeric" };
+  const options = {
+    month: "long",
+    weekday: "long",
+    day: "numeric",
+    year: "numeric",
+  };
   const currentDate = date.toLocaleDateString("en-Br", options);
   dateToday.textContent = `${currentDate}`;
 };
@@ -164,12 +169,14 @@ function showQuotes() {
   const quoteText = document.querySelector(".quote");
   const quoteAuthor = document.querySelector(".author");
 
-  const randomNum = Math.ceil(Math.random() * array.length);
-  console.log(randomNum);
-  let quote = array[randomNum];
+  const randomPos = Math.ceil(Math.random() * array.length);
+  console.log(randomPos);
+  let quote = array[randomPos];
 
   quoteText.textContent = quote.text;
   quoteAuthor.textContent = quote.author;
 }
 
 quoteButton.addEventListener("click", getQuotes);
+
+/*---------- PLAYER ----------*/
