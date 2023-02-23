@@ -169,7 +169,7 @@ function showQuotes() {
   const quoteText = document.querySelector(".quote");
   const quoteAuthor = document.querySelector(".author");
 
-  const randomPos = Math.ceil(Math.random() * array.length);
+  const randomPos = Math.floor(Math.random() * array.length);
   console.log(randomPos);
   let quote = array[randomPos];
 
@@ -180,3 +180,47 @@ function showQuotes() {
 quoteButton.addEventListener("click", getQuotes);
 
 /*---------- PLAYER ----------*/
+let isPlay = false; //переменная-флаг
+let playNum = 0;
+const playAudioButton = document.querySelector(".play");
+const playButtonNext = document.querySelector(".play-next");
+const playButtonPrev = document.querySelector(".play-prev");
+//const stopAudioButton = document.querySelector(".pause");
+
+const audio = new Audio();
+
+function playAudio() {
+  audio.src = "./assets/sounds/Summer Wind.mp3"; // ссылка на аудио-файл;
+  audio.currentTime = 0; //при каждом запуске функции трек будет воспроизводиться сначала
+  audio.play();
+}
+
+function pauseAudio() {
+  audio.pause();
+}
+
+const togglePlayButton = () => {
+  if (!isPlay) {
+    playAudio();
+    isPlay = true;
+    playAudioButton.classList.add("pause");
+  } else {
+    pauseAudio();
+    isPlay = false;
+    playAudioButton.classList.remove("pause");
+  }
+};
+
+const playNext = () => {
+  playNum++;
+  playAudio();
+};
+
+const playPrev = () => {
+  playNum--;
+  playAudio();
+};
+
+playAudioButton.addEventListener("click", togglePlayButton);
+playButtonNext.addEventListener("click", playNext);
+playButtonPrev.addEventListener("click", playPrev);
