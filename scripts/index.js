@@ -117,8 +117,7 @@ function getLocalStorage() {
 
   if (localStorage.getItem("city")) {
     city.value = localStorage.getItem("city");
-  } else {
-    city.value = "Saint-Petersburg";
+    getWeather();
   }
 
   console.log(`город: ${city.value}`);
@@ -129,11 +128,7 @@ window.addEventListener("load", getLocalStorage);
 //async перед функцией гарантирует, что эта функция в любом случае вернёт промис
 async function getWeather() {
   console.log("weather");
-  if (localStorage.getItem("city")) {
-    city.value = localStorage.getItem("city");
-  } else {
-    city.value = "Saint-Petersburg";
-  }
+
   const url = `https://api.openweathermap.org/data/2.5/weather?q=${city.value}&lang=en&appid=aae587ac736256664c86de685126b6dc&units=metric`;
   const res = await fetch(url);
   const data = await res.json();
