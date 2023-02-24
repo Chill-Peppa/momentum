@@ -243,8 +243,8 @@ playList.forEach((song, index) => {
   li.classList.add("play-item");
   li.textContent = `${song.title}`;
   playlistContainer.append(li);
-  li.addEventListener("click", () => {
+  /*li.addEventListener("click", () => {
     console.log(`index: ${index}`);
     playAudio(index);
-  });
+  });*/
 });
