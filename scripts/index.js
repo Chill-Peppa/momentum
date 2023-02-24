@@ -162,9 +162,10 @@ function setCity(event) {
 city.addEventListener("keypress", setCity);
 
 /*---------- QUOTES ----------*/
-let array;
+let array = [];
 async function getQuotes() {
-  const res = await fetch("../data.json");
+  const listSrc = "scripts/data.json";
+  const res = await fetch(listSrc);
   const data = await res.json();
   array = data;
 
