@@ -238,7 +238,7 @@ playButtonNext.addEventListener("click", playNext);
 playButtonPrev.addEventListener("click", playPrev);
 
 //create list in javaScript
-playList.forEach((song, index) => {
+playList.forEach((song) => {
   const li = document.createElement("li");
   li.classList.add("play-item");
   li.textContent = `${song.title}`;
