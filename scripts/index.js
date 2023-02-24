@@ -158,13 +158,12 @@ function setCity(event) {
     city.blur();
   }
 }
-
 city.addEventListener("keypress", setCity);
 
 /*---------- QUOTES ----------*/
 let array = [];
 async function getQuotes() {
-  const listSrc = "./data.json";
+  const listSrc = "scripts/data.json";
   const res = await fetch(listSrc);
   const data = await res.json();
   array = data;
