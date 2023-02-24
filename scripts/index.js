@@ -18,7 +18,7 @@ import {
   playlistContainer,
 } from "./constants.js";
 
-city.value = "Moscow";
+city.value = "Minsk";
 getWeather();
 
 const date = new Date();
