@@ -164,7 +164,7 @@ city.addEventListener("keypress", setCity);
 /*---------- QUOTES ----------*/
 let array = [];
 async function getQuotes() {
-  const listSrc = "../data.json";
+  const listSrc = "./data.json";
   const res = await fetch(listSrc);
   const data = await res.json();
   array = data;
