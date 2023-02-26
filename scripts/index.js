@@ -18,6 +18,9 @@ import {
   playlistContainer,
 } from "./constants.js";
 
+const wind = document.querySelector(".wind");
+const humidity = document.querySelector(".humidity");
+
 city.value = "Minsk";
 getWeather();
 
@@ -148,8 +151,10 @@ async function getWeather() {
 
   weatherIcon.className = "weather-icon owf";
   weatherIcon.classList.add(`owf-${data.weather[0].id}`);
-  temperature.textContent = `${data.main.temp}°C`;
-  weatherDescription.textContent = data.weather[0].description;
+  temperature.textContent = `Temperature: ${data.main.temp}°C`;
+  weatherDescription.textContent = `${data.weather[0].description}`;
+  wind.textContent = `Wind speed: ${data.wind.speed} m/s`;
+  humidity.textContent = `Humidity: ${data.main.humidity} %`;
 }
 
 function setCity(event) {
